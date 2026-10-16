@@ -1,0 +1,20 @@
+Package: laight
+Title: Miscellaneous Statistical Functions
+Version: 0.0.0.9000
+Authors@R: 
+    person("Jak", "Laight", , "w.laight@bham.ac.uk", role = c("aut", "cre"), comment = c(ORCID = "0009-0007-6171-9755"))
+Description: A collection of functions for a variety of statistical/data-handling tasks.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0
+Imports:
+  dplyr,
+  ggplot2,
+  tibble,
+  rlang
+URL: https://github.com/jaklaight/laight
+BugReports: https://github.com/jaklaight/laight/issues
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

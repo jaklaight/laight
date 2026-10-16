@@ -1,0 +1,102 @@
+
+# laight
+
+This package contains a growing collection of miscellaneous functions
+that I have found useful for day-to-day tasks in medical
+statistics/biostatistics.
+
+## Installation
+
+You can install the development version of `laight` by running the
+following:
+
+``` r
+remotes::install_github("jaklaight/laight")
+```
+
+## Examples
+
+``` r
+library(laight)
+```
+
+`shades()` produces a ggplot object, with partitioning of a probability
+density curve using alpha (the “shades”) and additionally provides
+probabilities at stated cut points.
+
+``` r
+shades()
+```
+
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+`flagpoles()` produces a ggplot object with a similar idea to shades.
+This plot is also a probability density curve and provides a “flagpole”
+that points in either direction and provides probabilities of being
+above or below where the flagpole is planted.
+
+``` r
+flagpoles()
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+`ordinal_bars()` produces a ggplot object and is useful for plotting
+counts such as adverse events in clinical trials, where the counts also
+have associated levels of intensity (e.g. severity) or some other
+ordinal quality. `ordinal_bars()` plots counts of given categoriesand
+shows the ordinal scale, with option to split by group (e.g. treatment).
+
+``` r
+set.seed(1)
+data <-
+  data.frame(
+    category = rep(c(rep("Burn", 5), rep("Nausea", 5), rep("Headache", 5),
+                rep("Pain", 5), rep("Other", 5)), 2),
+    ordinal = as.factor(rep(c(1,2,3,4,5), 10)),
+    count = c(rpois(25, 1), rpois(25, 1.5)),
+    group = c(rep("Control", 25), rep("Intervention", 25))
+    )
+
+ordinal_bars(data, category, ordinal, count, group, sort = "descending")
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />
+
+`recruitment_plot()` produces a ggplot object which displays counts at
+each time point, cumulative counts, and projected counts. Useful for
+inspecting how recruitment is going in a clinical trial. Optimistic
+example provided (i.e.  actual recruitment exceeds projected
+recruitment).
+
+``` r
+set.seed(1)
+data <-
+  data.frame(
+    time = seq(as.Date("2024-10-01"), as.Date("2026-09-01"), by = "month"),
+    recruited = rpois(24, 3),
+    projected = cumsum(rep(2, 24))
+  )
+data$time <- factor(format(data$time, "%b %Y"), levels = format(data$time, "%b %Y"))
+recruitment_plot(data, time, recruited, projected)
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+`variable_search()` allows searching for variables across a list or
+environment of data.frames.
+
+``` r
+
+my_list <- list(iris = iris, mtcars = mtcars)
+variable_search(my_list, c("sepal", "T"))
+#>   data_frame     variable matched_term
+#> 1       iris Sepal.Length        sepal
+#> 2       iris  Sepal.Width        sepal
+#> 3       iris Sepal.Length            T
+#> 4       iris  Sepal.Width            T
+#> 5       iris Petal.Length            T
+#> 6       iris  Petal.Width            T
+#> 7     mtcars         drat            T
+#> 8     mtcars           wt            T
+```
